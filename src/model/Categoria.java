@@ -4,7 +4,7 @@ Campos: nome, palavrasChave, é Personalizada, etc. */
 
 package model;
 
-class Categoria {
+public class Categoria {
 
     private String nome;
     private String[] palavrasChave;
