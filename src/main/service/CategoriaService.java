@@ -1,4 +1,3 @@
-//@"
 package main.service;
 
 import main.model.Categoria;
@@ -9,29 +8,30 @@ public class CategoriaService {
     private final Map<String, Categoria> categorias = new HashMap<>();
 
     public CategoriaService() {
-        // Categorias padrão melhoradas
-        addCategoriaPadrao("Transporte", "uber,99,táxi,taxi,transporte");
-        addCategoriaPadrao("Alimentação", "giassi,supermercado,mercado,padaria,restaurante");
-        addCategoriaPadrao("Renda", "salário,salario,rendimento");
-        addCategoriaPadrao("Moradia", "aluguel,condomínio,luz,água,agua");
+        // Categorias adaptadas para o Nubank
+        addCategoriaPadrao("Transferência", "transferência,transferencia,pix");
+        addCategoriaPadrao("Farmácia", "drogaria,farmácia,farmacia,raia,drogasil,drogaria catur,drogaria catarinense");
+        addCategoriaPadrao("Pagamento", "pagamento,fatura");
+        addCategoriaPadrao("Alimentação", "restaurante,mercado,padaria,supermercado");
     }
 
     private void addCategoriaPadrao(String nome, String palavras) {
         Categoria cat = new Categoria(nome);
         Arrays.stream(palavras.split(","))
-                .forEach(cat::addPalavraChave);
+            .forEach(cat::addPalavraChave);
         categorias.put(nome, cat);
     }
 
     public void categorizarAutomaticamente(List<Transacao> transacoes) {
         transacoes.forEach(transacao -> {
-            if (transacao.getCategoria() == null) { // Só categoriza se ainda não tiver categoria
+            // Transforma descrição em minúsculas para comparação case-insensitive
+            String descricao = transacao.getDescricao().toLowerCase();
+            
             categorias.values().stream()
-                    .filter(cat -> cat.matches(transacao.getDescricao()))
-                    .findFirst()
-                    .ifPresent(transacao::setCategoria);
-            }
+                .filter(cat -> cat.getPalavrasChave().stream()
+                    .anyMatch(palavra -> descricao.contains(palavra)))
+                .findFirst()
+                .ifPresent(transacao::setCategoria);
         });
     }
 }
-// "@ | Out-File -FilePath src/main/service/CategoriaService.java -Encoding UTF8

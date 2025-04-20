@@ -1,4 +1,3 @@
-//@"
 package main.service;
 
 import main.model.Transacao;
@@ -6,10 +5,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImportadorService {
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     public List<Transacao> importarCSV(String caminho) throws Exception {
         List<Transacao> transacoes = new ArrayList<>();
         
@@ -23,15 +25,15 @@ public class ImportadorService {
                     continue;
                 }
                 
-                String[] campos = linha.split(",");
-                transacoes.add(new Transacao(
-                    LocalDate.parse(campos[0].trim()),
-                    campos[1].trim(),
-                    new BigDecimal(campos[2].trim())
-                ));
+                String[] campos = linha.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Regex para lidar com vírgulas na descrição
+                
+                LocalDate data = LocalDate.parse(campos[0].trim(), FORMATO_DATA);
+                BigDecimal valor = new BigDecimal(campos[1].trim());
+                String descricao = campos[3].trim();
+                
+                transacoes.add(new Transacao(data, descricao, valor));
             }
         }
         return transacoes;
     }
 }
-//"@ | Out-File -FilePath src/main/service/ImportadorService.java -Encoding UTF8
