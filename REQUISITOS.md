@@ -6,6 +6,7 @@ Sistema desenvolvido em **Java** para leitura, categorização e organização d
 
 ## 🚀 Funcionalidades Esperadas
 
+
 ### ✅ Requisitos Funcionais
 
 - [ ] Importar arquivos de extrato nos formatos `.CSV` (OFX em breve)
