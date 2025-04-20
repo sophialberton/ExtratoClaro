@@ -1,4 +1,3 @@
-//@"
 package main.repository;
 
 import main.model.Transacao;
@@ -9,11 +8,9 @@ public class TransacaoRepository {
 
     public void salvarTodas(List<Transacao> novasTransacoes) {
         // Filtra duplicatas (simples comparação por descrição + valor)
-        novasTransacoes.removeIf(nt -> 
-            transacoes.stream().anyMatch(t ->
-                t.getDescricao().equals(nt.getDescricao()) &&
+        novasTransacoes.removeIf(nt -> transacoes.stream().anyMatch(t -> t.getDescricao().equals(nt.getDescricao()) &&
                 t.getValor().compareTo(nt.getValor()) == 0));
-                
+
         transacoes.addAll(novasTransacoes);
     }
 
@@ -26,5 +23,4 @@ public class TransacaoRepository {
         });
         return resumo;
     }
-}
-//"@ | Out-File -FilePath src/main/repository/TransacaoRepository.java -Encoding UTF8
+    }

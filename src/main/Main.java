@@ -1,21 +1,15 @@
 package main;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+//import java.nio.file.Files;
+//import java.nio.file.Paths;
 import java.util.Scanner;
-
 import main.controller.ExtratoController;
+//import main.model.TipoExtrato;
 
 public class Main {
-
-    String caminho1 = "arquivos\\extrato-exemplo.csv"; // Usando barra invertida para Windows
-    // OU melhor ainda:
-    String caminho2S = Paths.get("arquivos", "extrato-exemplo.csv").toString(); // Usando Paths para multiplataforma
-
     public static void main(String[] args) {
         ExtratoController controller = new ExtratoController();
-
-        // Usando try-with-resources para fechar o Scanner automaticamente
+        
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
                 System.out.println("\n=== MENU PRINCIPAL ===");
@@ -35,24 +29,15 @@ public class Main {
                 }
 
                 switch (opcao) {
-                    case 1 -> {
-                        System.out.print("Caminho do arquivo (ex: arquivos/extrato.csv): ");
-                        String caminho = scanner.nextLine();
-                        if (!Files.exists(Paths.get(caminho))) {
-                            System.out.println("Arquivo não encontrado!");
-                            continue;
-                        }
-                        controller.processarExtrato(caminho);
-                    }
+                    case 1 -> controller.iniciarFluxo(scanner);
                     case 2 -> controller.exibirResumo();
                     case 3 -> {
                         System.out.println("Encerrando o sistema...");
-                        return; // Mais elegante que System.exit()
+                        return;
                     }
                     default -> System.out.println("Opção inválida!");
                 }
             }
         }
     }
-
 }
