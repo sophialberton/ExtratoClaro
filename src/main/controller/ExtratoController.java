@@ -50,7 +50,7 @@ public void processarExtrato(String caminhoArquivo, TipoExtrato tipo) {
     }
 
     public void iniciarFluxo(Scanner scanner) {
-        System.out.println("\n🔷 SELECIONE O TIPO DE EXTRATO:");
+        System.out.println("\n-->SELECIONE O TIPO DE EXTRATO:");
         TipoExtrato[] tipos = TipoExtrato.values();
         for (int i = 0; i < tipos.length; i++) {
             System.out.println((i + 1) + ". " + tipos[i].nome);
@@ -60,7 +60,7 @@ public void processarExtrato(String caminhoArquivo, TipoExtrato tipo) {
         scanner.nextLine(); // Limpar buffer
         
         TipoExtrato tipo = tipos[opcao - 1];
-        System.out.print("📂 Caminho do arquivo CSV: ");
+        System.out.print("--> Caminho do arquivo CSV: ");
         String caminho = scanner.nextLine();
         
         processarExtrato(caminho, tipo);
