@@ -12,7 +12,9 @@ public class CategoriaService {
         addCategoriaPadrao("Transferência", "transferência,transferencia,pix");
         addCategoriaPadrao("Farmácia", "drogaria,farmácia,farmacia,raia,drogasil,drogaria catur,drogaria catarinense");
         addCategoriaPadrao("Pagamento", "pagamento,fatura");
-        addCategoriaPadrao("Alimentação", "restaurante,mercado,padaria,supermercado");
+        addCategoriaPadrao("Alimentação", "restaurante,mercado,padaria,supermercado,sabor,alimentos");
+        addCategoriaPadrao("Transporte", "99app,uber");
+
     }
 
     private void addCategoriaPadrao(String nome, String palavras) {
