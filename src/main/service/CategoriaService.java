@@ -38,7 +38,7 @@ public class CategoriaService {
     }
 
     public void adicionarCategoriaManual(Scanner scanner) {
-        System.out.println("\n🆕 CRIAR NOVA CATEGORIA");
+        System.out.println("\n=== CRIAR NOVA CATEGORIA===");
         
         System.out.print("Nome da categoria: ");
         String nome = scanner.nextLine();
