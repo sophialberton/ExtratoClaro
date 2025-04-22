@@ -36,4 +36,24 @@ public class CategoriaService {
                 .ifPresent(transacao::setCategoria);
         });
     }
+
+    public void adicionarCategoriaManual(Scanner scanner) {
+        System.out.println("\n🆕 CRIAR NOVA CATEGORIA");
+        
+        System.out.print("Nome da categoria: ");
+        String nome = scanner.nextLine();
+        
+        System.out.print("Palavras-chave (separadas por vírgula): ");
+        String palavrasInput = scanner.nextLine();
+        
+        Categoria novaCategoria = new Categoria(nome);
+        Arrays.stream(palavrasInput.split(","))
+              .map(String::trim)
+              .filter(p -> !p.isEmpty())
+              .forEach(novaCategoria::addPalavraChave);
+        
+        categorias.put(nome, novaCategoria);
+        System.out.println("✅ Categoria '" + nome + "' adicionada com sucesso!");
+    }
+    
 }
