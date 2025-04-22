@@ -53,7 +53,7 @@ public class CategoriaService {
               .forEach(novaCategoria::addPalavraChave);
         
         categorias.put(nome, novaCategoria);
-        System.out.println("✅ Categoria '" + nome + "' adicionada com sucesso!");
+        System.out.println("--> Categoria '" + nome + "' adicionada com sucesso!");
     }
-    
+
 }
