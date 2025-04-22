@@ -72,4 +72,8 @@ public class ExtratoController {
         repository.limparTransacoes();
         processarExtrato(caminho, tipo);
     }
+
+    public CategoriaService getCategorizador() {
+        return categorizador;
+    }
 }

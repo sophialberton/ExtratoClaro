@@ -35,6 +35,7 @@ public class Main {
                         System.out.println("Encerrando o sistema...");
                         return;
                     }
+                    case 4 -> controller.getCategorizador().adicionarCategoriaManual(scanner);
                     default -> System.out.println("Opção inválida!");
                 }
             }
