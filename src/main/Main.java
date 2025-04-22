@@ -9,14 +9,15 @@ import main.controller.ExtratoController;
 public class Main {
     public static void main(String[] args) {
         ExtratoController controller = new ExtratoController();
-        
+
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
                 System.out.println("\n=== MENU PRINCIPAL ===");
                 System.out.println("1. Importar extrato");
                 System.out.println("2. Ver resumo");
-                System.out.println("3. Sair");
-                System.out.println("4. Criar categoria");
+                System.out.println("3. Criar categoria");
+                System.out.println("4. Editar categoria");
+                System.out.println("5. Sair");
                 System.out.print("Opção: ");
 
                 int opcao = 0;
@@ -32,11 +33,12 @@ public class Main {
                 switch (opcao) {
                     case 1 -> controller.iniciarFluxo(scanner);
                     case 2 -> controller.exibirResumo();
-                    case 3 -> {
+                    case 3 -> controller.getCategorizador().adicionarCategoriaManual(scanner);
+                    case 4 -> controller.getCategorizador().editarCategoria(scanner);
+                    case 5 -> {
                         System.out.println("Encerrando o sistema...");
                         return;
                     }
-                    case 4 -> controller.getCategorizador().adicionarCategoriaManual(scanner);
                     default -> System.out.println("Opção inválida!");
                 }
             }
