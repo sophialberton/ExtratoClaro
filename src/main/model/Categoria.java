@@ -25,5 +25,9 @@ public class Categoria {
     // Getters
     public String getNome() { return nome; }
     public List<String> getPalavrasChave() { return palavrasChave; }
+
+    public boolean removePalavraChave(String palavra) {
+        return palavrasChave.remove(palavra.toLowerCase());
+    }
 }
 //"@ | Out-File -FilePath src/main/model/Categoria.java -Encoding UTF8
