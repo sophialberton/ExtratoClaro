@@ -157,6 +157,43 @@ public class CategoriaService {
         }
     }
 
+    public void removerCategoria(Scanner scanner) {
+        if (categorias.isEmpty()) {
+            System.out.println("\nNenhuma categoria cadastrada!");
+            return;
+        }
+    
+        System.out.println("\nCATEGORIAS CADASTRADAS:");
+        List<String> nomesCategorias = new ArrayList<>(categorias.keySet());
+        for (int i = 0; i < nomesCategorias.size(); i++) {
+            System.out.printf("%d. %s%n", i + 1, nomesCategorias.get(i));
+        }
+    
+        System.out.print("\nDigite o número da categoria para remover (0 para cancelar): ");
+        int escolha = lerOpcaoNumerica(scanner, 0, nomesCategorias.size());
+        
+        if (escolha == 0) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+    
+        String nomeCategoria = nomesCategorias.get(escolha - 1);
+        
+        System.out.printf("\nTem certeza que deseja remover a categoria '%s'?%n", nomeCategoria);
+        System.out.println("1. Sim, remover");
+        System.out.println("2. Não, cancelar");
+        System.out.print("Confirmação: ");
+        
+        int confirmacao = lerOpcaoNumerica(scanner, 1, 2);
+        
+        if (confirmacao == 1) {
+            categorias.remove(nomeCategoria);
+            System.out.printf("Categoria '%s' removida com sucesso!%n", nomeCategoria);
+        } else {
+            System.out.println("Operação cancelada.");
+        }
+    }
+
     private int lerOpcaoNumerica(Scanner scanner, int minimo, int maximo) {
         while (true) {
             try {
