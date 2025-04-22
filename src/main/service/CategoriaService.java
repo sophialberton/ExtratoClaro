@@ -55,6 +55,7 @@ public class CategoriaService {
         categorias.put(nome, novaCategoria);
         System.out.println("--> Categoria '" + nome + "' adicionada com sucesso!");
     }
+    
     public void editarCategoria(Scanner scanner) {
         if (categorias.isEmpty()) {
             System.out.println("\n⚠️ Nenhuma categoria cadastrada!");
@@ -64,20 +65,13 @@ public class CategoriaService {
         // Lista categorias disponíveis
         System.out.println("\n📋 CATEGORIAS DISPONÍVEIS:");
         List<String> nomesCategorias = new ArrayList<>(categorias.keySet());
+        
         for (int i = 0; i < nomesCategorias.size(); i++) {
             System.out.printf("%d. %s%n", i + 1, nomesCategorias.get(i));
         }
     
-        // Seleção da categoria
-        System.out.print("\nEscolha o número da categoria para editar: ");
-        int escolha = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
-    
-        if (escolha < 1 || escolha > nomesCategorias.size()) {
-            System.out.println("❌ Opção inválida!");
-            return;
-        }
-    
+        // Seleção segura da categoria
+        int escolha = lerOpcaoNumerica(scanner, 1, nomesCategorias.size());
         String nomeCategoria = nomesCategorias.get(escolha - 1);
         Categoria categoria = categorias.get(nomeCategoria);
     
@@ -91,7 +85,7 @@ public class CategoriaService {
             System.out.println("4. Voltar");
             System.out.print("Opção: ");
     
-            int opcao = scanner.nextInt();
+            int opcao = lerOpcaoNumerica(scanner, 1, 4);
             scanner.nextLine(); // Limpar buffer
     
             switch (opcao) {
@@ -99,16 +93,53 @@ public class CategoriaService {
                     System.out.print("Nova palavra-chave: ");
                     String novaPalavra = scanner.nextLine().trim();
                     categoria.addPalavraChave(novaPalavra);
-                    System.out.println("✅ Palavra-chave adicionada!");
+                    System.out.println("--> Palavra-chave adicionada!");
                 }
                 case 2 -> {
-                    System.out.print("Palavra-chave para remover: ");
-                    String palavraRemover = scanner.nextLine().trim();
-                    if (categoria.getPalavrasChave().remove(palavraRemover)) {
-                        System.out.println("✅ Palavra-chave removida!");
-                    } else {
-                        System.out.println("❌ Palavra não encontrada!");
+                    // Verifica se há palavras-chave
+                    if (categoria.getPalavrasChave().isEmpty()) {
+                        System.out.println("\nAVISO: Esta categoria nao contem palavras-chave.");
+                        System.out.println("(Pressione Enter para continuar...)");
+                        scanner.nextLine();
+                        continue;
                     }
+                
+                    // Lista palavras-chave
+                    System.out.println("\nPALAVRAS-CHAVE DISPONIVEIS:");
+                    List<String> palavras = new ArrayList<>(categoria.getPalavrasChave());
+                    
+                    System.out.printf("  %2d. %-20s %s%n", 0, "[Cancelar]", "Voltar sem remover");
+                    for (int i = 0; i < palavras.size(); i++) {
+                        System.out.printf("  %2d. %s%n", i + 1, palavras.get(i));
+                    }
+                
+                    // Input
+                    System.out.print("\nDigite o numero da palavra para remover (0 para cancelar): ");
+                    int idxPalavra = lerOpcaoNumerica(scanner, 0, palavras.size());
+                    
+                    if (idxPalavra == 0) {
+                        System.out.println("\nOperacao cancelada.");
+                        continue;
+                    }
+                
+                    // Confirmação
+                    String palavraRemovida = palavras.get(idxPalavra - 1);
+                    System.out.printf("\nTem certeza que deseja remover '%s'?%n", palavraRemovida);
+                    System.out.println("1. Sim, remover");
+                    System.out.println("2. Nao, cancelar");
+                    System.out.print("Confirmacao: ");
+                    
+                    int confirmacao = lerOpcaoNumerica(scanner, 1, 2);
+                    
+                    if (confirmacao == 1) {
+                        categoria.getPalavrasChave().remove(palavraRemovida);
+                        System.out.printf("\nSUCESSO: '%s' removida.%n", palavraRemovida);
+                    } else {
+                        System.out.println("\nOperacao cancelada.");
+                    }
+                    
+                    System.out.println("\n(Pressione Enter para continuar...)");
+                    scanner.nextLine();
                 }
                 case 3 -> {
                     System.out.print("Novo nome para a categoria: ");
@@ -116,12 +147,31 @@ public class CategoriaService {
                     categorias.remove(nomeCategoria);
                     categorias.put(novoNome, categoria);
                     nomeCategoria = novoNome;
-                    System.out.println("✅ Categoria renomeada!");
+                    System.out.println("--> Categoria renomeada!");
                 }
                 case 4 -> {
                     return;
                 }
-                default -> System.out.println("❌ Opção inválida!");
+                default -> System.out.println("--> Opção inválida!");
+            }
+        }
+    }
+
+    private int lerOpcaoNumerica(Scanner scanner, int minimo, int maximo) {
+        while (true) {
+            try {
+                System.out.print("Escolha uma opção (" + minimo + "-" + maximo + "): ");
+                int opcao = scanner.nextInt();
+                scanner.nextLine(); // Limpar buffer
+                
+                if (opcao >= minimo && opcao <= maximo) {
+                    return opcao;
+                } else {
+                    System.out.println("--> Por favor, digite um número entre " + minimo + " e " + maximo);
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("--> Entrada inválida! Digite apenas números.");
+                scanner.nextLine(); // Limpar input incorreto
             }
         }
     }
