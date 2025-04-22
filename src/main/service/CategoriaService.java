@@ -86,76 +86,73 @@ public class CategoriaService {
             System.out.println("5. Voltar");
             System.out.print("Opção: ");
             
-            int opcao = lerOpcaoNumerica(scanner, 1, 5);    
-            scanner.nextLine(); // Limpar buffer
+            int opcao = lerOpcaoNumerica(scanner, 1, 5);
     
             switch (opcao) {
-                case 1 -> {
-                    System.out.print("Nova palavra-chave: ");
-                    String novaPalavra = scanner.nextLine().trim();
-                    categoria.addPalavraChave(novaPalavra);
-                    System.out.println("--> Palavra-chave adicionada!");
-                }
-                case 2 -> {
-                    // Verifica se há palavras-chave
-                    if (categoria.getPalavrasChave().isEmpty()) {
-                        System.out.println("\nAVISO: Esta categoria nao contem palavras-chave.");
-                        System.out.println("(Pressione Enter para continuar...)");
-                        scanner.nextLine();
-                        continue;
-                    }
-                
-                    // Lista palavras-chave
-                    System.out.println("\nPALAVRAS-CHAVE DISPONIVEIS:");
-                    List<String> palavras = new ArrayList<>(categoria.getPalavrasChave());
-                    
-                    System.out.printf("  %2d. %-20s %s%n", 0, "[Cancelar]", "Voltar sem remover");
-                    for (int i = 0; i < palavras.size(); i++) {
-                        System.out.printf("  %2d. %s%n", i + 1, palavras.get(i));
-                    }
-                
-                    // Input
-                    System.out.print("\nDigite o numero da palavra para remover (0 para cancelar): ");
-                    int idxPalavra = lerOpcaoNumerica(scanner, 0, palavras.size());
-                    
-                    if (idxPalavra == 0) {
-                        System.out.println("\nOperacao cancelada.");
-                        continue;
-                    }
-                
-                    // Confirmação
-                    String palavraRemovida = palavras.get(idxPalavra - 1);
-                    System.out.printf("\nTem certeza que deseja remover '%s'?%n", palavraRemovida);
-                    System.out.println("1. Sim, remover");
-                    System.out.println("2. Nao, cancelar");
-                    System.out.print("Confirmacao: ");
-                    
-                    int confirmacao = lerOpcaoNumerica(scanner, 1, 2);
-                    
-                    if (confirmacao == 1) {
-                        categoria.getPalavrasChave().remove(palavraRemovida);
-                        System.out.printf("\nSUCESSO: '%s' removida.%n", palavraRemovida);
-                    } else {
-                        System.out.println("\nOperacao cancelada.");
-                    }
-                    
-                    System.out.println("\n(Pressione Enter para continuar...)");
-                    scanner.nextLine();
-                }
-                case 3 -> {
-                    System.out.print("Novo nome para a categoria: ");
-                    String novoNome = scanner.nextLine().trim();
-                    categorias.remove(nomeCategoria);
-                    categorias.put(novoNome, categoria);
-                    nomeCategoria = novoNome;
-                    System.out.println("--> Categoria renomeada!");
-                }
+                case 1 -> adicionarPalavraChave(scanner, categoria);
+                case 2 -> removerPalavraChave(scanner, categoria);
+                case 3 -> renomearCategoria(scanner, nomeCategoria, categoria);
                 case 4 -> {
-                    return;
+                    if (confirmarRemocao(scanner, "Tem certeza que deseja apagar esta categoria?")) {
+                        categorias.remove(nomeCategoria);
+                        System.out.println("Categoria removida com sucesso!");
+                        return;
+                    }
                 }
-                default -> System.out.println("--> Opção inválida!");
+                case 5 -> { return; }
             }
         }
+    }
+    
+    // Métodos auxiliares separados para melhor organização
+    private void adicionarPalavraChave(Scanner scanner, Categoria categoria) {
+        System.out.print("\nNova palavra-chave: ");
+        String novaPalavra = scanner.nextLine().trim();
+        categoria.addPalavraChave(novaPalavra);
+        System.out.println("Palavra-chave adicionada!");
+    }
+    
+    private void removerPalavraChave(Scanner scanner, Categoria categoria) {
+        if (categoria.getPalavrasChave().isEmpty()) {
+            System.out.println("\nEsta categoria não tem palavras-chave!");
+            return;
+        }
+        
+        System.out.println("\nPalavras-chave disponíveis:");
+        List<String> palavras = new ArrayList<>(categoria.getPalavrasChave());
+        for (int i = 0; i < palavras.size(); i++) {
+            System.out.printf("%d. %s%n", i + 1, palavras.get(i));
+        }
+        
+        System.out.print("\nDigite o número da palavra para remover (0 para cancelar): ");
+        int idxPalavra = lerOpcaoNumerica(scanner, 0, palavras.size());
+        
+        if (idxPalavra > 0) {
+            String palavraRemovida = palavras.get(idxPalavra - 1);
+            categoria.getPalavrasChave().remove(palavraRemovida);
+            System.out.printf("Palavra-chave '%s' removida!%n", palavraRemovida);
+        }
+    }
+    
+    private void renomearCategoria(Scanner scanner, String nomeAtual, Categoria categoria) {
+        System.out.print("\nNovo nome para a categoria: ");
+        String novoNome = scanner.nextLine().trim();
+        
+        if (!novoNome.isEmpty() && !categorias.containsKey(novoNome)) {
+            categorias.remove(nomeAtual);
+            categorias.put(novoNome, categoria);
+            System.out.println("Categoria renomeada com sucesso!");
+        } else {
+            System.out.println("Nome inválido ou já existente!");
+        }
+    }
+    
+    private boolean confirmarRemocao(Scanner scanner, String mensagem) {
+        System.out.printf("\n%s%n", mensagem);
+        System.out.println("1. Sim");
+        System.out.println("2. Não");
+        System.out.print("Confirmação: ");
+        return lerOpcaoNumerica(scanner, 1, 2) == 1;
     }
 
     public void removerCategoria(Scanner scanner) {
@@ -212,5 +209,20 @@ public class CategoriaService {
                 scanner.nextLine(); // Limpar input incorreto
             }
         }
+    }
+
+    public void listarCategorias() {
+        if (categorias.isEmpty()) {
+            System.out.println("\nNenhuma categoria cadastrada.");
+            return;
+        }
+        
+        System.out.println("\nLISTA DE CATEGORIAS:");
+        categorias.forEach((nome, categoria) -> {
+            System.out.println("- " + nome + ": " + 
+                String.join(", ", categoria.getPalavrasChave()));
+        });
+        
+        System.out.println("\nTotal: " + categorias.size() + " categorias cadastradas.");
     }
 }
