@@ -9,7 +9,7 @@ public class CategoriaService {
 
     public CategoriaService() {
         // Categorias adaptadas para o Nubank
-        addCategoriaPadrao("Transferência", "transferência,transferencia,pix");
+        addCategoriaPadrao("Transf. Contas", "Sophia");
         addCategoriaPadrao("Farmácia", "drogaria,farmácia,farmacia,raia,drogasil,drogaria catur,drogaria catarinense");
         addCategoriaPadrao("Pagamento", "pagamento,fatura");
         addCategoriaPadrao("Alimentação", "restaurante,mercado,padaria,supermercado,sabor,alimentos");
@@ -58,12 +58,12 @@ public class CategoriaService {
     
     public void editarCategoria(Scanner scanner) {
         if (categorias.isEmpty()) {
-            System.out.println("\n⚠️ Nenhuma categoria cadastrada!");
+            System.out.println("\n-== Nenhuma categoria cadastrada! ==-");
             return;
         }
     
         // Lista categorias disponíveis
-        System.out.println("\n📋 CATEGORIAS DISPONÍVEIS:");
+        System.out.println("\n-== CATEGORIAS DISPONÍVEIS==-:");
         List<String> nomesCategorias = new ArrayList<>(categorias.keySet());
         
         for (int i = 0; i < nomesCategorias.size(); i++) {
@@ -77,7 +77,7 @@ public class CategoriaService {
     
         // Menu de edição
         while (true) {
-            System.out.println("\n✏️ EDITANDO CATEGORIA: " + nomeCategoria);
+            System.out.println("\n-== EDITANDO CATEGORIA: " + nomeCategoria);
             System.out.println("Palavras-chave atuais: " + String.join(", ", categoria.getPalavrasChave()));
             System.out.println("1. Adicionar palavra-chave");
             System.out.println("2. Remover palavra-chave");
