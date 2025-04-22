@@ -16,6 +16,7 @@ public class Main {
                 System.out.println("1. Importar extrato");
                 System.out.println("2. Ver resumo");
                 System.out.println("3. Sair");
+                System.out.println("4. Criar categoria");
                 System.out.print("Opção: ");
 
                 int opcao = 0;
@@ -35,6 +36,7 @@ public class Main {
                         System.out.println("Encerrando o sistema...");
                         return;
                     }
+                    case 4 -> controller.getCategorizador().adicionarCategoriaManual(scanner);
                     default -> System.out.println("Opção inválida!");
                 }
             }
