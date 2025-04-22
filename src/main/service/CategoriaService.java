@@ -77,15 +77,16 @@ public class CategoriaService {
     
         // Menu de edição
         while (true) {
-            System.out.println("\n-== EDITANDO CATEGORIA: " + nomeCategoria);
+            System.out.println("\nEDITANDO CATEGORIA: " + nomeCategoria);
             System.out.println("Palavras-chave atuais: " + String.join(", ", categoria.getPalavrasChave()));
             System.out.println("1. Adicionar palavra-chave");
             System.out.println("2. Remover palavra-chave");
             System.out.println("3. Renomear categoria");
-            System.out.println("4. Voltar");
+            System.out.println("4. Apagar esta categoria");
+            System.out.println("5. Voltar");
             System.out.print("Opção: ");
-    
-            int opcao = lerOpcaoNumerica(scanner, 1, 4);
+            
+            int opcao = lerOpcaoNumerica(scanner, 1, 5);    
             scanner.nextLine(); // Limpar buffer
     
             switch (opcao) {
