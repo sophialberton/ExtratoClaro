@@ -60,14 +60,15 @@ public class ExtratoController {
         for (int i = 0; i < tipos.length; i++) {
             System.out.println((i + 1) + ". " + tipos[i].nome);
         }
-
+        
+        System.out.print("Opção:");
         int opcao = scanner.nextInt();
         scanner.nextLine(); // Limpar buffer
-
+        
         TipoExtrato tipo = tipos[opcao - 1];
         System.out.print("--> Caminho do arquivo CSV: ");
         String caminho = scanner.nextLine();
-
+        
         // Limpa transações antes de cada nova importação
         repository.limparTransacoes();
         processarExtrato(caminho, tipo);
