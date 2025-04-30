@@ -71,7 +71,7 @@ public class ImportadorService {
                 .replace("", "")
                 .trim();
 
-        // Verifica se usa ponto como separador decimal
+        // Verifica se usa ponto como separador decimal (se não da erro)
         if (valorLimpo.contains(".") && valorLimpo.contains(",")) {
             // Formato 1.000,00 (remove pontos de milhar)
             valorLimpo = valorLimpo.replace(".", "").replace(",", ".");
